@@ -131,7 +131,7 @@ std::string current_head() {
 void command_commit(int argc, char* argv[]) {
     require_initialized();
     if (argc != 3) {
-        throw std::runtime_error("usage: minigit commit "message"");
+        throw std::runtime_error("usage: minigit commit \\"message\\"");
     }
 
     const auto index = read_index();

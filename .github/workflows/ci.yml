@@ -1,0 +1,27 @@
+name: C++ CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S . -B build
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Smoke test
+        run: |
+          mkdir -p /tmp/minigit-test
+          cd /tmp/minigit-test
+          echo "hello" > note.txt
+          $GITHUB_WORKSPACE/build/minigit init
+          $GITHUB_WORKSPACE/build/minigit add note.txt
+          $GITHUB_WORKSPACE/build/minigit status
+          $GITHUB_WORKSPACE/build/minigit commit "test commit"
+          $GITHUB_WORKSPACE/build/minigit log
